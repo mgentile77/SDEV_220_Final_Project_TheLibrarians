@@ -77,6 +77,28 @@ Please alter your search and try again."
             return print ("The book ID entered does not exist.\n\
 Please check the number and try again")
 
+    def get_apa_format(self, book_id):
+        try:
+            list = self.bfile.query('Book_ID == [@book_id]')
+            if list.empty == True:
+                raise KeyError()       
+            _author = self.bfile.loc[book_id, 'Author']
+            if ' ' in _author:
+                    _authLn = _author.split(' ', -1)[-1]
+                    _authFn = _author.split(' ', 1)[0]
+            else:
+                    _authLn = _author
+                    _authFn = ''
+            _year = int(self.bfile.loc[book_id, 'Year-Of-Publication'])
+            _title = self.bfile.loc[book_id, 'Title']
+            _publisher = self.bfile.loc[book_id, 'Publisher']
+            return f"""{_authLn}, {_authFn[0]}. ({_year}). {_title}. \n\t{_publisher}."""
+        except KeyError:
+            return  "Your book was not found.\n\
+Please alter your search and try again."
+        except Exception as e:
+            return str(e)
+
 class Lib_Members(Library):
        
     def __init__(self):
