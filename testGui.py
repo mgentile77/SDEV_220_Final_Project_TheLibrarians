@@ -60,7 +60,7 @@ class MenuMain(tk.Tk):
 
 class Reports(tk.Toplevel):
     
-    def _init_(self, parent):
+    def __init__(self, parent):
         super().__init__(parent)
         self.width = 410
         self.height = 265
@@ -87,10 +87,10 @@ class Reports(tk.Toplevel):
         tk.Label(self.frame_head3, text = "You Like to View",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12')).grid(row = 1, column = 0, columnspan = 2)
         
-        self.but_horde = ttk.Button(self.frame_head3, style = 'nbutton.TButton', text = "Reports", command = self.books_out)
+        self.but_horde = ttk.Button(self.frame_head3, style = 'nbutton.TButton', text = "Books Currently Out", command = self.books_out)
         self.but_horde.grid(row = 3, column = 0, sticky = 'nsew')
         
-        self.but_char = ttk.Button(self.frame_head3, style = 'nbutton.TButton',text = "Catalog", command = self.books_late)
+        self.but_char = ttk.Button(self.frame_head3, style = 'nbutton.TButton',text = "Member with Late Books", command = self.books_late)
         self.but_char.grid(row = 3, column = 1, sticky = 'nsew')
         ttk.Button(self.frame_head3, text = 'Exit', style = 'n2button.TButton',command = lambda : exit()).grid(row = 4, column = 0, columnspan = 2)
         self.results2 = tk.Frame(self, bg = '#e1d8b9')#setting up results panel
