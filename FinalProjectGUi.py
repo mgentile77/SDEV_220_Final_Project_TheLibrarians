@@ -26,7 +26,7 @@ class BookManager:
         self.button_update = tk.Button(master, text="Update Book", command=self.update_book)
         self.button_delete = tk.Button(master, text="Delete Book", command=self.delete_book)
         self.button_add = tk.Button(master, text="Add Phone Number", command=self.add_PhoneNum)
-        self.button_delete = tk.Button(master, text="Delete Phone Number", command=self.delete_PhoneNum)
+        # self.button_delete = tk.Button(master, text="Delete Phone Number", command=self.delete_PhoneNum)
     
         # layout of the Gui
         
@@ -75,11 +75,11 @@ class BookManager:
                 messagebox.showinfo("Success", "Book deleted successfully!")
                 return
             messagebox.showerror("Error", "Book not found!")
-     def add_PhoneNum(self):
+    def add_PhoneNum(self):
         Number = {
             "Phone Number": self.entry_PhoneNum.get(),
         }
-        self.books.append(book)
+        self.books.append(Number)
         self.clear_entries()
         messagebox.showinfo("success", "Phone Number added successfully!")       
          
