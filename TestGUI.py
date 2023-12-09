@@ -52,6 +52,7 @@ class MenuMain(tk.Tk):
         self.show_reports()
     
     def show_reports(self):
+        main_geometry = self.geometry()
         # Create an instance of Reports when the button is clicked
         new_win1 = Reports(self)
         new_win1.grab_set()
@@ -81,7 +82,6 @@ class Reports(tk.Toplevel):
         self.screen_hei = self.winfo_screenheight()
         self.x = (self.screen_wid/2) - (self.width/2)
         self.y = (self.screen_hei/2) - (self.height/2)
-        self.geometry("%dx%d+%d+%d" % (self.width, self.height, self.x, self.y))
         self.configure(bg = '#e1d8b9')
         self.style = ttk.Style()
         self.style.configure('nbutton.TButton', background = '#e1d8b9', width = 18, height = 34)
@@ -92,6 +92,7 @@ class Reports(tk.Toplevel):
         self.borfile = ...  # Initialize borfile
         self.mfile = ...    # Initialize mfile
         self.bfile = ...    # Initialize bfile
+        
 
     def report_window(self):
         
@@ -113,25 +114,21 @@ class Reports(tk.Toplevel):
         self.results2.grid(row = 1, column = 0, columnspan = 2)
 
     def books_out(self):
-        self.count = 4 #Counter variable
-        MenuMain.clear_frame(self.results2)#Clears results frame
+        self.count = 4  # Counter variable
+        MenuMain.clear_frame(self.results2)  # Clears results frame
         new_height = self.winfo_screenheight()
         new_width = self.winfo_screenwidth()
-        new_y = (self.screen_hei/2) - (new_height/2)
-        self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.x, new_y))
+        new_y = (self.screen_hei / 2) - (new_height / 2)
+        self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
+
         result_text = Report().bks_out_emails()
         result_text_widget = tk.Text(self.results2, wrap="word", height=10, width=50)
         result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2)
+        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - 300) // 2)  # Adjust padx accordingly
 
         report_instance = self.master.report_instance
         result_df = report_instance.bks_out_emails()
         self.display_dataframe(result_df)
-
-        result_text = report_instance.bks_out_emails()
-        result_text_widget = tk.Text(self.results2, wrap="word", height=10, width=50)
-        result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2)
 
         # Optionally, display DataFrame if needed
         result_df = report_instance.bks_out_emails()
@@ -140,21 +137,50 @@ class Reports(tk.Toplevel):
         
     def books_late(self):
         MenuMain.clear_frame(self.results2)
-        report_instance = self.master.report_instance
-        
+        self.count = 4  # Counter variable
+        MenuMain.clear_frame(self.results2)  # Clears results frame
+        new_height = self.winfo_screenheight()
+        new_width = self.winfo_screenwidth()
+        new_y = (self.screen_hei / 2) - (new_height / 2)
+        self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
+
         result_text = Report().bks_late()
         result_text_widget = tk.Text(self.results2, wrap="word", height=10, width=50)
         result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2)
+        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - 300) // 2)  # Adjust padx accordingly
+
+        report_instance = self.master.report_instance
+        result_df = report_instance.bks_late()
+        self.display_dataframe(result_df)
+
+        # Optionally, display DataFrame if needed
+        result_df = report_instance.bks_late()
+        self.display_dataframe(result_df)
 
     def display_dataframe(self, dataframe):
         # Function to display the DataFrame in the Tkinter window
         rows, columns = dataframe.shape
+
+        # Create Text widgets for each cell
+        text_widgets = [[tk.Text(self.results2, wrap="word", height=2, width=15) for _ in range(columns)] for _ in range(rows)]
+
+        # Add column headings
         for i, col in enumerate(dataframe.columns):
-            tk.Label(self.results2, text=col, bg='#e1d8b9', font=('Baskerville Old Face', '12', 'bold')).grid(row=0,
-                                                                                                               column=i)
-            for j in range(rows):
-                tk.Label(self.results2, text=dataframe.iloc[j, i], bg='#e1d8b9').grid(row=j + 1, column=i)
+            tk.Label(self.results2, text=col, bg='#e1d8b9', font=('Baskerville Old Face', '12', 'bold')).grid(row=0, column=i)
+    
+        # Add data to the Text widgets
+        for i in range(rows):
+            for j in range(columns):
+                text_widgets[i][j].insert(tk.END, str(dataframe.iloc[i, j]))
+                text_widgets[i][j].grid(row=i + 1, column=j, padx=5, pady=2, sticky='nsew')
+
+        # Set column weights for proper resizing
+        for i in range(columns):
+            self.results2.columnconfigure(i, weight=1)
+
+        # Set row weights for proper resizing
+        for i in range(rows + 1):  # +1 for the header row
+            self.results2.rowconfigure(i, weight=1)
 
     def bks_out_emails(self):
         self.identify_late()
