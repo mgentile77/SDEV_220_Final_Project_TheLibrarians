@@ -122,9 +122,9 @@ class Reports(tk.Toplevel):
         self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
 
         result_text = Report().bks_out_emails()
-        result_text_widget = tk.Text(self.results2, wrap="word", height=10, width=50)
+        result_text_widget = tk.Text(self.results2, wrap="word", height=38, width=150)
         result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - 300) // 2)  # Adjust padx accordingly
+        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - result_text_widget.winfo_reqwidth()) // 2)  # Adjust padx accordingly
 
         report_instance = self.master.report_instance
         result_df = report_instance.bks_out_emails()
@@ -145,9 +145,9 @@ class Reports(tk.Toplevel):
         self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
 
         result_text = Report().bks_late()
-        result_text_widget = tk.Text(self.results2, wrap="word", height=10, width=50)
+        result_text_widget = tk.Text(self.results2, wrap="word", height=38, width=150)
         result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - 300) // 2)  # Adjust padx accordingly
+        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - result_text_widget.winfo_reqwidth()) // 2)  # Adjust padx accordingly
 
         report_instance = self.master.report_instance
         result_df = report_instance.bks_late()
@@ -158,7 +158,6 @@ class Reports(tk.Toplevel):
         self.display_dataframe(result_df)
 
     def display_dataframe(self, dataframe):
-        # Function to display the DataFrame in the Tkinter window
         rows, columns = dataframe.shape
 
         # Create Text widgets for each cell
@@ -166,21 +165,37 @@ class Reports(tk.Toplevel):
 
         # Add column headings
         for i, col in enumerate(dataframe.columns):
-            tk.Label(self.results2, text=col, bg='#e1d8b9', font=('Baskerville Old Face', '12', 'bold')).grid(row=0, column=i)
-    
+            tk.Label(self.results2, text=col, bg='#e1d8b9', font=('Baskerville Old Face', '12', 'bold')).grid(row=0, column=i, padx=5, pady=2, sticky='nsew')
+
         # Add data to the Text widgets
         for i in range(rows):
             for j in range(columns):
                 text_widgets[i][j].insert(tk.END, str(dataframe.iloc[i, j]))
-                text_widgets[i][j].grid(row=i + 1, column=j, padx=5, pady=2, sticky='nsew')
 
         # Set column weights for proper resizing
         for i in range(columns):
-            self.results2.columnconfigure(i, weight=1)
+            self.results2.columnconfigure(i, weight=1, uniform='col_weight')
 
         # Set row weights for proper resizing
-        for i in range(rows + 1):  # +1 for the header row
-            self.results2.rowconfigure(i, weight=1)
+        for i in range(rows):
+            self.results2.rowconfigure(i + 1, weight=1)
+
+        # Calculate the total width of the data area
+        total_width = sum([text_widgets[0][j].winfo_reqwidth() for j in range(columns)])
+        # Calculate the x-position to center the data area
+        x_position = (self.winfo_width() - total_width) // 2
+
+        # Add data to the Text widgets with centered placement
+        for i in range(rows):
+            for j in range(columns):
+                text_widgets[i][j].grid(row=i + 1, column=j, padx=5, pady=2, sticky='nsew')
+                self.results2.grid_propagate(False)
+                self.results2.update_idletasks()
+                text_widgets[i][j].config(width=text_widgets[i][j].winfo_reqwidth())
+
+        # Adjust column uniform to center the headers
+        for i in range(columns):
+            self.results2.grid_columnconfigure(i, uniform='col_weight')
 
     def bks_out_emails(self):
         self.identify_late()
