@@ -249,9 +249,9 @@ class Report(Lib_Books, Lib_Members, Lib_Fines):
             __all_merge = __all_merge[['Name', 'Email', 'Title', 'Author', 'Date_Due','Late']
                                       ].set_index(['Name', 'Email', 'Title'], append=True)
 
-            _rec_count = __all_merge.shape[0]
-            # print (__all_merge, f"\n\nTotal records in file = {_rec_count}\n")
-        return __all_merge
+            __all_merge = __all_merge.to_string(index=True, max_colwidth=45, show_dimensions=True,
+                                                justify='center', index_names=True )
+        return f'{__all_merge}\n\n'
 
     def bks_late(self):    
         with pd.option_context('display.max_rows', None, 'display.max_colwidth', 50, 'display.width', 100):
@@ -264,10 +264,12 @@ class Report(Lib_Books, Lib_Members, Lib_Fines):
             __late_merge['Name']= (__late_merge['Fname']+" "+__late_merge['Lname'])
             __late_merge = __late_merge[['Name', 'Phone', 'Email', 'Title', 'Author','Days_Late', 'Late','Balance']]
             __late_merge= __late_merge.set_index(['Name', 'Phone', 'Email','Balance', 'Title']
-                                                 ).groupby(['Days_Late']).filter(lambda x: (x['Late'] == 'Late').any())
-            _rec_count = __late_merge.shape[0]
-            # print (__late_merge, f"\n\nTotal records in file = {_rec_count}\n")
-        return __late_merge
+                                                    ).groupby(['Days_Late']).filter(lambda x: (x['Late'] == 'Late').any())
+            __late_merge=__late_merge.drop(columns='Late')
+            __late_merge= __late_merge.dropna(axis=0, how='any')
+            __late_merge = __late_merge.to_string(index=True, max_colwidth=45, show_dimensions=True,
+                                                justify='center', index_names=True )
+        return f'{__late_merge}\n\n'
     
 
 

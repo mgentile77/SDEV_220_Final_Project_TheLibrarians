@@ -114,8 +114,17 @@ class Reports(tk.Toplevel):#Marshall wrote this code block
         self.results2 = tk.Frame(self, bg = '#e1d8b9')#setting up results panel
         self.results2.grid(row=2, padx=10, pady=10,sticky='nsew')
 
-    def books_out(self):
-        pass
+    def books_out(self): #changes the reports window to reflect the actions of books out button
+        MenuMain.clear_frame(self.results2)
+        my_results = Report().bks_out_emails()
+        my_scrollbar = tk.Scrollbar(self.results2)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+        text_box = Text(
+            self.results2,yscrollcommand=my_scrollbar.set)
+        text_box.pack(expand=True, fill='both')
+        text_box.insert('end', my_results)
+        text_box.config(state='disabled')
+        my_scrollbar.config(command=text_box.yview)
 
         
     def books_late(self):
