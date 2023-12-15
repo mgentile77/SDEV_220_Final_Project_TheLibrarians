@@ -1,12 +1,13 @@
 import tkinter as tk
+# from pandastable import Table, TableModel
 from tkinter import *
 from tkinter import ttk
 import Library_Mods as lb
 from Library_Mods import *
 from tkinter import messagebox 
 
-class MenuMain(tk.Tk):
-    def __init__(self):
+class MenuMain(tk.Tk):#Marshall wrote this code block
+    def __init__(self): #sets up code for the framework of the main window
         super().__init__()
         width = 380
         height = 205
@@ -17,7 +18,6 @@ class MenuMain(tk.Tk):
         self.geometry("%dx%d+%d+%d" % (width, height, x, y))
         self.style = ttk.Style()
         self.style2 = ttk.Style()
-        # self.protocol("WM_DELETE_WINDOW", self.disable_Xclose)
         self.style.configure('nbutton.TButton', background = '#e1d8b9', width = 18, height = 34)
         self.style2.configure('n2button.TButton', background = '#e1d8b9')
         self.configure(bg = '#e1d8b9')
@@ -28,15 +28,13 @@ class MenuMain(tk.Tk):
         
         self.frame_start = tk.Frame(bg = '#e1d8b9')#Frame for start welcome and instructions
         self.frame_start.pack(padx = (0,10))
-        # self.image_start = tk.Label(self.frame_start, bg = '#e1d8b9', image = self.back_image)
-        # self.image_start.grid(row = 0, column = 0, rowspan = 5, sticky = 'nsew')
         tk.Label(self.frame_start, text = "Thank You for Visiting Your",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12', 'bold')).grid(row = 0, column = 0, columnspan = 2)
         tk.Label(self.frame_start, text = "Anderson Public Library",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '24', 'bold')).grid(row = 1, column = 0, columnspan = 2)
         tk.Label(self.frame_start, text = "What Would You Like To Access",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12', 'bold')).grid(row = 2, column = 0, columnspan = 2)
-        
+        #Sets up the buttons to access other windows
         self.but_horde = ttk.Button(self.frame_start, style = 'nbutton.TButton', text = "Reports", command = self.report)
         self.but_horde.grid(row = 3, column = 0, sticky = 'nsew')
         
@@ -44,8 +42,8 @@ class MenuMain(tk.Tk):
         self.but_char.grid(row = 3, column = 1, sticky = 'nsew')
 
         self.but_member = ttk.Button(self.frame_start, style='nbutton.TButton', text="Members", command=self.members_window)
-        self.but_member.grid(row=4, column=0, sticky = 'nsew')
-
+        self.but_member.grid(row=4, column=0, columnspan = 2)
+        #sets up exit button to close the program
         ttk.Button(self.frame_start, text = 'Exit', style = 'n2button.TButton',command = lambda : exit()).grid(row = 5, column = 0, columnspan = 2)
     
     def report(self):#opens report window
@@ -72,146 +70,75 @@ class MenuMain(tk.Tk):
             widgets.destroy() 
 
 
-class Reports(tk.Toplevel):
+class Reports(tk.Toplevel):#Marshall wrote this code block
     
-    def __init__(self, parent):
+    def __init__(self, parent): #Sets up the framework for the reports window
         super().__init__(parent)
         self.width = 380
         self.height = 205
         self.screen_wid = self.winfo_screenwidth()
         self.screen_hei = self.winfo_screenheight()
-        self.x = (self.screen_wid/2) - (self.width/2)
-        self.y = (self.screen_hei/2) - (self.height/2)
+        self.geometry(f"{self.screen_wid-25}x{self.screen_hei-60}")
+
         self.configure(bg = '#e1d8b9')
         self.style = ttk.Style()
         self.style.configure('nbutton.TButton', background = '#e1d8b9', width = 18, height = 34)
         self.title("Reports")
         self.report_window()
-        self.results2 = tk.Frame(self, bg='#e1d8b9')
-        self.results2.grid(row=1, column=0, columnspan=2)
-        self.borfile = ...  # Initialize borfile
-        self.mfile = ...    # Initialize mfile
-        self.bfile = ...    # Initialize bfile
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         
 
     def report_window(self):
         
         self.frame_head3 = tk.Frame(self, bg = '#e1d8b9')#Frame for image
-        self.frame_head3.grid(row = 0, column = 0, columnspan = 2)
+        self.frame_head3.grid(row = 0, sticky='nsew')
 
-        # self.image_start = tk.Label(self.frame_start, bg = '#e1d8b9', image = self.back_image)
-        # self.image_start.grid(row = 0, column = 0, rowspan = 5, sticky = 'nsew')
+        self.frame_buttons = tk.Frame(self, bg = '#e1d8b9', height=50)#Frame for image
+        self.frame_buttons.grid(row = 1, sticky='nsew')
+        self.frame_buttons.grid_columnconfigure(0, weight=1)
+        self.frame_buttons.grid_columnconfigure(1, weight=1)
         tk.Label(self.frame_head3, text = "Which Report Would",
-                  bg = '#e1d8b9', font = ('Baskerville Old Face', '18', 'bold')).grid(row = 0, column = 0, columnspan = 2)
+                  bg = '#e1d8b9', font = ('Baskerville Old Face', '18', 'bold')).pack(fill='x')
         tk.Label(self.frame_head3, text = "You Like to View",
-                  bg = '#e1d8b9', font = ('Baskerville Old Face', '12')).grid(row = 1, column = 0, columnspan = 2)
+                  bg = '#e1d8b9', font = ('Baskerville Old Face', '12')).pack(fill='x')
 
-        ttk.Button(self.frame_head3, text='Books Out', style='nbutton.TButton', command=self.books_out).grid(row=2, column=0)
-        ttk.Button(self.frame_head3, text='Books Late', style='nbutton.TButton', command=self.books_late).grid(row=2, column=1)
-        
-        ttk.Button(self.frame_head3, text='Return to Main Menu', style='n2button.TButton', command=self.destroy).grid(row=4, column=0, columnspan=2)
+        ttk.Button(self.frame_buttons, text='Books Out', style='nbutton.TButton', 
+                   command=self.books_out).grid(row=0, column=0, padx=10, sticky='e')
+        ttk.Button(self.frame_buttons, text='Books Late', style='nbutton.TButton', 
+                   command=self.books_late).grid(row=0, column=1, padx=10, sticky= 'w')
+        #sets up button to return back to the main menu
+        ttk.Button(self.frame_buttons, text='Return to Main Menu', style='n2button.TButton', 
+                   command=self.destroy).grid(row=1, column=0, columnspan=2, padx=10)
         self.results2 = tk.Frame(self, bg = '#e1d8b9')#setting up results panel
-        self.results2.grid(row = 1, column = 0, columnspan = 2)
+        self.results2.grid(row=2, padx=10, pady=10,sticky='nsew')
 
-    def books_out(self):
-        self.count = 4  # Counter variable
-        MenuMain.clear_frame(self.results2)  # Clears results frame
-        new_height = self.winfo_screenheight()
-        new_width = self.winfo_screenwidth()
-        new_y = (self.screen_hei / 2) - (new_height / 2)
-        self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
-
-        result_text = Report().bks_out_emails()
-        result_text_widget = tk.Text(self.results2, wrap="word", height=38, width=150)
-        result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - result_text_widget.winfo_reqwidth()) // 2)  # Adjust padx accordingly
-
-        report_instance = self.master.report_instance
-        result_df = report_instance.bks_out_emails()
-        self.display_dataframe(result_df)
-
-        # Optionally, display DataFrame if needed
-        result_df = report_instance.bks_out_emails()
-        self.display_dataframe(result_df)
+    def books_out(self): #changes the reports window to reflect the actions of books out button
+        MenuMain.clear_frame(self.results2)
+        my_results = Report().bks_out_emails()
+        my_scrollbar = tk.Scrollbar(self.results2)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+        text_box = Text(
+            self.results2,yscrollcommand=my_scrollbar.set)
+        text_box.pack(expand=True, fill='both')
+        text_box.insert('end', my_results)
+        text_box.config(state='disabled')
+        my_scrollbar.config(command=text_box.yview)
 
         
-    def books_late(self):
+    def books_late(self): #changes the reports window to reflect the actions of the books late button
         MenuMain.clear_frame(self.results2)
-        self.count = 4  # Counter variable
-        MenuMain.clear_frame(self.results2)  # Clears results frame
-        new_height = self.winfo_screenheight()
-        new_width = self.winfo_screenwidth()
-        new_y = (self.screen_hei / 2) - (new_height / 2)
-        self.geometry("%dx%d+%d+%d" % (new_width, new_height, self.winfo_x(), new_y))
-
-        result_text = Report().bks_late()
-        result_text_widget = tk.Text(self.results2, wrap="word", height=38, width=150)
-        result_text_widget.insert(tk.END, result_text)
-        result_text_widget.grid(row=2, column=0, columnspan=2, padx=(new_width - result_text_widget.winfo_reqwidth()) // 2)  # Adjust padx accordingly
-
-        report_instance = self.master.report_instance
-        result_df = report_instance.bks_late()
-        self.display_dataframe(result_df)
-
-        # Optionally, display DataFrame if needed
-        result_df = report_instance.bks_late()
-        self.display_dataframe(result_df)
-
-    def display_dataframe(self, dataframe):
-        rows, columns = dataframe.shape
-
-        # Create Text widgets for each cell
-        text_widgets = [[tk.Text(self.results2, wrap="word", height=2, width=15) for _ in range(columns)] for _ in range(rows)]
-
-        # Add column headings
-        for i, col in enumerate(dataframe.columns):
-            tk.Label(self.results2, text=col, bg='#e1d8b9', font=('Baskerville Old Face', '12', 'bold')).grid(row=0, column=i, padx=5, pady=2, sticky='nsew')
-
-        # Add data to the Text widgets
-        for i in range(rows):
-            for j in range(columns):
-                text_widgets[i][j].insert(tk.END, str(dataframe.iloc[i, j]))
-
-        # Set column weights for proper resizing
-        for i in range(columns):
-            self.results2.columnconfigure(i, weight=1, uniform='col_weight')
-
-        # Set row weights for proper resizing
-        for i in range(rows):
-            self.results2.rowconfigure(i + 1, weight=1)
-
-        # Calculate the total width of the data area
-        total_width = sum([text_widgets[0][j].winfo_reqwidth() for j in range(columns)])
-        # Calculate the x-position to center the data area
-        x_position = (self.winfo_width() - total_width) // 2
-
-        # Add data to the Text widgets with centered placement
-        for i in range(rows):
-            for j in range(columns):
-                text_widgets[i][j].grid(row=i + 1, column=j, padx=5, pady=2, sticky='nsew')
-                self.results2.grid_propagate(False)
-                self.results2.update_idletasks()
-                text_widgets[i][j].config(width=text_widgets[i][j].winfo_reqwidth())
-
-        # Adjust column uniform to center the headers
-        for i in range(columns):
-            self.results2.grid_columnconfigure(i, uniform='col_weight')
-
-    def bks_out_emails(self):
-        self.identify_late()
-        with pd.option_context('display.max_rows', None, 'display.max_colwidth', 50, 'display.width', 120):
-            __all_merge = self.borfile.merge(self.mfile[['Fname', 'Lname', 'Email']], right_index=True,
-                                             left_on='Member_ID'
-                                             ).merge(self.bfile[['Title', 'Author']], right_index=True,
-                                                     left_on='Book_ID').reset_index(level='Book_ID')
-            __all_merge['Name'] = (__all_merge['Fname'] + " " + __all_merge['Lname'])
-            __all_merge = __all_merge[['Name', 'Email', 'Title', 'Author', 'Date_Due', 'Late']
-                                      ].set_index(['Name', 'Email', 'Title'], append=True)
-
-            _rec_count = __all_merge.shape[0]
-            result_str = f"{__all_merge}\n\nTotal records in file = {_rec_count}\n"
-            
-        return result_str
+        my_results = Report().bks_late()
+        my_scrollbar = tk.Scrollbar(self.results2)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+        text_box = Text(
+            self.results2,yscrollcommand=my_scrollbar.set)
+        text_box.pack(expand=True, fill='both')
+        text_box.insert('end', my_results)
+        text_box.config(state='disabled')
+        my_scrollbar.config(command=text_box.yview)
+        
+        
 class Book_Catalog(tk.Toplevel):
     pass
 
