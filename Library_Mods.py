@@ -261,13 +261,18 @@ class Report(Lib_Books, Lib_Members, Lib_Fines):
                                                       left_on= 'Book_ID'
                                                       ).merge(self.finefile[['Balance']], left_on='Member_ID', right_index = True)
             __late_merge[['Days_Late']] = pd.Timestamp.today().floor('D') - __late_merge[['Date_Due']]
+            __late_merge['Title'] = __late_merge['Title'].str.wrap(45)
             __late_merge['Name']= (__late_merge['Fname']+" "+__late_merge['Lname'])
-            __late_merge = __late_merge[['Name', 'Phone', 'Email', 'Title', 'Author','Days_Late', 'Late','Balance']]
+            __late_merge['Author']= __late_merge['Author'].str.split().str[-1]
+            __late_merge = __late_merge[['Name', 'Phone', 'Email', 'Title', 'Author','Days_Late','Late','Balance']]
             __late_merge= __late_merge.set_index(['Name', 'Phone', 'Email','Balance', 'Title']
-                                                 ).groupby(['Days_Late']).filter(lambda x: (x['Late'] == 'Late').any())
-            _rec_count = __late_merge.shape[0]
-            # print (__late_merge, f"\n\nTotal records in file = {_rec_count}\n")
-        return __late_merge
+                                                    ).groupby(['Days_Late']).filter(lambda x: (x['Late'] == 'Late').any())
+            __late_merge=__late_merge.drop(columns='Late')
+            __late_merge= __late_merge.dropna(axis=0, how='any')
+            __count = __late_merge.shape
+            __late_merge = __late_merge.to_string(index=True, max_colwidth=45, show_dimensions=True,
+                                                justify='center', index_names=True )
+        return f'{__late_merge}\n\n'
     
 
 
