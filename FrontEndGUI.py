@@ -1,11 +1,9 @@
 import tkinter as tk
-# from pandastable import Table, TableModel
 from tkinter import *
 from tkinter import ttk
 import Library_Mods as lb
 from Library_Mods import *
 from tkinter import messagebox 
-from tkintertable import TableCanvas, TableModel
 
 class MenuMain(tk.Tk):#Marshall wrote this code block
     def __init__(self):
@@ -105,9 +103,9 @@ class Reports(tk.Toplevel):#Marshall wrote this code block
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12')).pack(fill='x')
 
         ttk.Button(self.frame_buttons, text='Books Out', style='nbutton.TButton', 
-                   command=self.books_out).grid(row=0, column=0, padx=10, sticky='e')
+                   command=self.books_out).grid(row=0, column=0, sticky='e')
         ttk.Button(self.frame_buttons, text='Books Late', style='nbutton.TButton', 
-                   command=self.books_late).grid(row=0, column=1, padx=10, sticky= 'w')
+                   command=self.books_late).grid(row=0, column=1, sticky= 'w')
         
         ttk.Button(self.frame_buttons, text='Return to Main Menu', style='n2button.TButton', 
                    command=self.destroy).grid(row=1, column=0, columnspan=2, padx=10)
