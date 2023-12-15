@@ -28,8 +28,6 @@ class MenuMain(tk.Tk):
         
         self.frame_start = tk.Frame(bg = '#e1d8b9')#Frame for start welcome and instructions
         self.frame_start.pack(padx = (0,10))
-        # self.image_start = tk.Label(self.frame_start, bg = '#e1d8b9', image = self.back_image)
-        # self.image_start.grid(row = 0, column = 0, rowspan = 5, sticky = 'nsew')
         tk.Label(self.frame_start, text = "Thank You for Visiting Your",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12', 'bold')).grid(row = 0, column = 0, columnspan = 2)
         tk.Label(self.frame_start, text = "Anderson Public Library",
@@ -80,8 +78,6 @@ class Reports(tk.Toplevel):
         self.frame_head3 = tk.Frame(self, bg = '#e1d8b9')#Frame for image
         self.frame_head3.grid(row = 0, column = 0)
 
-        # self.image_start = tk.Label(self.frame_start, bg = '#e1d8b9', image = self.back_image)
-        # self.image_start.grid(row = 0, column = 0, rowspan = 5, sticky = 'nsew')
         tk.Label(self.frame_head3, text = "Which Report Would",
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '18', 'bold')).grid(row = 0, column = 0, columnspan = 2)
         tk.Label(self.frame_head3, text = "You Like to View",
