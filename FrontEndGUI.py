@@ -1,11 +1,8 @@
 import tkinter as tk
-# from pandastable import Table, TableModel
 from tkinter import *
 from tkinter import ttk
-import Library_Mods as lb
 from Library_Mods import *
 from tkinter import messagebox 
-from tkintertable import TableCanvas, TableModel
 
 class MenuMain(tk.Tk):#Marshall wrote this code block
     def __init__(self):
@@ -37,13 +34,13 @@ class MenuMain(tk.Tk):#Marshall wrote this code block
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12', 'bold')).grid(row = 2, column = 0, columnspan = 2)
         
         self.but_horde = ttk.Button(self.frame_start, style = 'nbutton.TButton', text = "Reports", command = self.report)
-        self.but_horde.grid(row = 3, column = 0, sticky = 'nsew')
+        self.but_horde.grid(row = 3, column = 0, sticky = 'e', padx=1)
         
         self.but_char = ttk.Button(self.frame_start, style = 'nbutton.TButton',text = "Catalog", command = self.catalog)
-        self.but_char.grid(row = 3, column = 1, sticky = 'nsew')
+        self.but_char.grid(row = 3, column = 1, sticky = 'w', padx=1)
 
         self.but_member = ttk.Button(self.frame_start, style='nbutton.TButton', text="Members", command=self.members_window)
-        self.but_member.grid(row=4, column=0, columnspan = 2)
+        self.but_member.grid(row=4, column=0, columnspan = 2, pady=2)
 
         ttk.Button(self.frame_start, text = 'Exit', style = 'n2button.TButton',command = lambda : exit()).grid(row = 5, column = 0, columnspan = 2)
     
@@ -105,12 +102,12 @@ class Reports(tk.Toplevel):#Marshall wrote this code block
                   bg = '#e1d8b9', font = ('Baskerville Old Face', '12')).pack(fill='x')
 
         ttk.Button(self.frame_buttons, text='Books Out', style='nbutton.TButton', 
-                   command=self.books_out).grid(row=0, column=0, padx=10, sticky='e')
+                   command=self.books_out).grid(row=0, column=0, padx=1, sticky='e')
         ttk.Button(self.frame_buttons, text='Books Late', style='nbutton.TButton', 
-                   command=self.books_late).grid(row=0, column=1, padx=10, sticky= 'w')
+                   command=self.books_late).grid(row=0, column=1, padx=1, sticky= 'w')
         
         ttk.Button(self.frame_buttons, text='Return to Main Menu', style='n2button.TButton', 
-                   command=self.destroy).grid(row=1, column=0, columnspan=2, padx=10)
+                   command=self.destroy).grid(row=1, column=0, columnspan=2, pady=2)
         self.results2 = tk.Frame(self, bg = '#e1d8b9')#setting up results panel
         self.results2.grid(row=2, padx=10, pady=10,sticky='nsew')
 
@@ -123,7 +120,7 @@ class Reports(tk.Toplevel):#Marshall wrote this code block
             self.results2,yscrollcommand=my_scrollbar.set)
         text_box.pack(expand=True, fill='both')
         text_box.insert('end', my_results)
-        text_box.config(state='disabled')
+        text_box.config(state='disabled', padx=25)
         my_scrollbar.config(command=text_box.yview)
 
         
@@ -136,7 +133,7 @@ class Reports(tk.Toplevel):#Marshall wrote this code block
             self.results2,yscrollcommand=my_scrollbar.set)
         text_box.pack(expand=True, fill='both')
         text_box.insert('end', my_results)
-        text_box.config(state='disabled')
+        text_box.config(state='disabled', padx=25)
         my_scrollbar.config(command=text_box.yview)
         
         
